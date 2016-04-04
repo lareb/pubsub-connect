@@ -1,5 +1,7 @@
 #PubSub notification fior Android and iOS devices
 #for detail please refer https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create#body.aspect
+require 'json'
+require 'curb'
 module Pubsub
 
 	class Notification
@@ -7,15 +9,12 @@ module Pubsub
 
 		def initialize(data)
 			#data must be an hash object
-			#example {to: "/topics/News", data: {message: "testing one two three"}}
+			#example {data: {message: "testing one two three", image: "htp://example.com/xyz/abc.png"}}
 			
-			if data.blank? 
+			if data.nil? 
 				raise "Data packet is missing."
-			elsif !data.has_key?(:to)
-				raise "Invalid topic or topic key 'to' is missing."
 			end
-			
-			@json_data = JSON.pretty_generate(data)
+			@json_data = JSON.pretty_generate(data.merge(to: "/topics/#{PUBSUB_TOPIC}"))
 		end
 
 		def broadcast
@@ -25,8 +24,8 @@ module Pubsub
 					curl.headers["Authorization"] = "key=#{GCM_API_KEY}"
 				end
 			rescue Exception => e
-				Rails.logger.info("======================")
-				Rails.logger.info e.message
+				puts ("======================")
+				puts  e.message
 				#error log here
 				raise e.message
 			end
@@ -38,7 +37,7 @@ module Pubsub
 
 		def record_notification_logs(req)
 			#put your code here to record notification response
-			Rails.logger.info JSON.parse req.body_str
+			puts  JSON.parse req.body_str
 		end
 
 	end

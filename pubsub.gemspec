@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
   gem.name          = 'pubsub-connect'
-  gem.version       = '0.0.2'
+  gem.version       = '0.0.4'
   gem.date      = '2016-04-04'
   gem.authors       = ['Lareb Nawab']
   gem.license       = 'MIT'
@@ -14,4 +14,5 @@ Gem::Specification.new do |gem|
   
   gem.files         = ["lib/pubsub.rb"]
   gem.add_dependency 'curb', '~> 0'
+  gem.add_dependency 'json', '~> 1.8'
 end
